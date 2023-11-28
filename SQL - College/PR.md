@@ -1,4 +1,4 @@
-Lab 6
+PR
 CREATE TABLE Cust (
     custid VARCHAR(255) primary key,
     Lname VARCHAR(255),

@@ -1,390 +1,80 @@
-# My SQL Life
+The exact list of data types available in a database system can vary depending on the database management system (DBMS) you're using. However, I can provide a list of common data types that are widely supported across many relational database systems like MySQL, PostgreSQL, Oracle, and SQL Server:
 
-\c --mysql as root@localhost
+1. **Numeric/Integer Types**:
+   - `INT` or `INTEGER`: Integer.
+   - `SMALLINT`: Small integer.
+   - `TINYINT`: Tiny integer.
+   - `BIGINT`: Large integer.
+   - `NUMERIC(precision, scale)`: Exact numeric with a specified number of digits in the precision and a specified number of decimal places in the scale.
+   - `DECIMAL(precision, scale)`: Synonym for `NUMERIC`.
 
-show databases;
+2. **Floating-Point Types**:
+   - `FLOAT`: Single-precision floating-point number.
+   - `REAL`: Synonym for `FLOAT`.
+   - `DOUBLE PRECISION`: Double-precision floating-point number.
 
-\use <!-- database name -->
+3. **Character/String Types**:
+   - `CHAR(n)`: Fixed-length character string.
+   - `VARCHAR(n)`: Variable-length character string with a maximum length of `n`.
+   - `TEXT`: Variable-length character string with no specified maximum length.
 
-show tables;
+4. **Binary Data Types**:
+   - `BINARY(n)`: Fixed-length binary string.
+   - `VARBINARY(n)`: Variable-length binary string with a maximum length of `n`.
+   - `BLOB`: Binary large object for storing binary data.
 
------------------------------------
+5. **Date and Time Types**:
+   - `DATE`: Date.
+   - `TIME`: Time.
+   - `DATETIME`: Date and time.
+   - `TIMESTAMP`: Date and time, often used for timestamps.
 
-+--------------------+
-| Database           |
-+--------------------+
-| 19cse202_lab1      |
-| 19cse202_lab2      |
-| 19cse202_lab4      |
-| information_schema |
-| mysql              |
-| performance_schema |
-| sys                |
-+--------------------+
+6. **Boolean Type**:
+   - `BOOLEAN` or `BOOL`: Represents true or false values.
 
-+-------------------------+
-| Tables_in_19cse202_lab1 |
-+-------------------------+
-| department              |
-+-------------------------+
+7. **Enumeration Types**:
+   - `ENUM('value1', 'value2', ...)`: Represents a set of predefined values.
 
-+------------+----------+--------+------------+
-| Name       | Building | Budget | Classrooms |
-+------------+----------+--------+------------+
-| Biology    | Watson   | 200.00 |          7 |
-| CSE        | Taylor   | 100.00 |          6 |
-| Electrical | Taylor   | 300.00 |          3 |
-| Finance    | Painter  | 500.00 |          5 |
-| History    | Painter  | 600.00 |          3 |
-| Music      | Packard  | 400.00 |          4 |
-| Physics    | Watson   | 700.00 |          2 |
-+------------+----------+--------+------------+
-```sql
-CREATE TABLE departments (
-    Name VARCHAR(255),
-    Building VARCHAR(255),
-    Budget DECIMAL(10, 2),
-    Classrooms INT
-);
+8. **Bit Strings**:
+   - `BIT(n)`: Fixed-length bit string.
+   - `VARBIT(n)`: Variable-length bit string with a maximum length of `n`.
 
-INSERT INTO departments (Name, Building, Budget, Classrooms)
-VALUES
-    ('Biology', 'Watson', 200.00, 7),
-    ('CSE', 'Taylor', 100.00, 6),
-    ('Electrical', 'Taylor', 300.00, 3),
-    ('Finance', 'Painter', 500.00, 5),
-    ('History', 'Painter', 600.00, 3),
-    ('Music', 'Packard', 400.00, 4),
-    ('Physics', 'Watson', 700.00, 2);
+9. **Array Types** (available in some DBMSs):
+   - `ARRAY`: Stores an array of values of a specific data type.
 
-```
--------------------------------------
-+-------------------------+
-| Tables_in_19cse202_lab2 |
-+-------------------------+
-| courses                 |
-| department              |
-| instructors             |
-| section                 |
-| table1                  |
-| table2                  |
-| teaches                 |
-+-------------------------+
+10. **User-Defined Types** (available in some DBMSs):
+    - These allow you to define custom data types.
 
-+-----------+---------------------------+------------+---------+
-| course_Id | title                     | dept_name  | credits |
-+-----------+---------------------------+------------+---------+
-| BIO-101   | Intro to Biology          | Biology    |       4 |
-| BIO-301   | Genetics                  | Biology    |       4 |
-| BIO-399   | Computational Biology     | Biology    |       3 |
-| CS-101    | Intro to Computer science | CSE        |       4 |
-| CS-190    | Game design               | CSE        |       4 |
-| CS-315    | Robotics                  | CSE        |       3 |
-| CS-319    | Image Processing          | CSE        |       3 |
-| CS-347    | Database system concepts  | CSE        |       3 |
-| EE-181    | Intro to Digital systems  | Electrical |       3 |
-| FIN-201   | Investment Banking        | Finance    |       3 |
-| HIS-351   | World History             | History    |       3 |
-| MU-199    | Music video production    | Music      |       3 |
-| PHY-101   | Physical Principles       | Physics    |       4 |
-+-----------+---------------------------+------------+---------+
+11. **Other Types**:
+    - `JSON` and `JSONB`: For storing JSON data.
+    - `UUID`: Universally unique identifier.
+    - `GEOMETRY` and `GEOGRAPHY`: For spatial data (e.g., for GIS applications).
 
-```sql
-CREATE TABLE courses (
+Please note that specific database systems might have additional data types or variations of the above types. It's essential to refer to the documentation of the database system you are using for precise details on supported data types and their characteristics.
 
-    course_Id VARCHAR(10),
-    title VARCHAR(255),
-    dept_name VARCHAR(255),
-    credits INT
-);
+---------------------------
 
-INSERT INTO courses (course_Id, title, dept_name, credits)
-VALUES
-    ('BIO-101', 'Intro to Biology', 'Biology', 4),
-    ('BIO-301', 'Genetics', 'Biology', 4),
-    ('BIO-399', 'Computational Biology', 'Biology', 3),
-    ('CS-101', 'Intro to Computer Science', 'CSE', 4),
-    ('CS-190', 'Game Design', 'CSE', 4),
-    ('CS-315', 'Robotics', 'CSE', 3),
-    ('CS-319', 'Image Processing', 'CSE', 3),
-    ('CS-347', 'Database System Concepts', 'CSE', 3),
-    ('EE-181', 'Intro to Digital Systems', 'Electrical', 3),
-    ('FIN-201', 'Investment Banking', 'Finance', 3),
-    ('HIS-351', 'World History', 'History', 3),
-    ('MU-199', 'Music Video Production', 'Music', 3),
-    ('PHY-101', 'Physical Principles', 'Physics', 4);
-```
+The main difference between `INT` and `NUMERIC` (or `INTEGER` and `NUMERIC`) data types in SQL databases is in how they handle numeric values:
 
-select * from departments;
-+------------+----------+--------+
-| dept_name  | building | budget |
-+------------+----------+--------+
-| Biology    | Watson   |  90000 |
-| CSE        | Taylor   | 100000 |
-| Electrical | Taylor   |  85000 |
-| Finance    | Painter  | 120000 |
-| History    | Painter  |  50000 |
-| Music      | Packard  |  80000 |
-| Physics    | Watson   |  70000 |
-+------------+----------+--------+
-```sql
-CREATE TABLE departments (
-    dept_name VARCHAR(255),
-    building VARCHAR(255),
-    budget INT
-);
+1. **`INT` or `INTEGER`**:
+   - These data types are used to store integer values (whole numbers).
+   - They are typically used for whole numbers without decimal places.
+   - The storage size varies depending on the database system but is usually 4 bytes or 8 bytes, depending on whether it's a 32-bit or 64-bit system.
 
-INSERT INTO departments (dept_name, building, budget)
-VALUES
-    ('Biology', 'Watson', 90000),
-    ('CSE', 'Taylor', 100000),
-    ('Electrical', 'Taylor', 85000),
-    ('Finance', 'Painter', 120000),
-    ('History', 'Painter', 50000),
-    ('Music', 'Packard', 80000),
-    ('Physics', 'Watson', 70000);
-```
-select * from instructors;
-+-------+------------+------------+--------+
-| ID    | name       | dept_name  | salary |
-+-------+------------+------------+--------+
-| 10101 | Srinivasan | CSE        |  65000 |
-| 12121 | Wu         | Finance    |  90000 |
-| 15151 | Mozart     | Music      |  40000 |
-| 22222 | Einstein   | Physics    |  95000 |
-| 32343 | El Said    | History    |  60000 |
-| 33456 | Gold       | Physics    |  87000 |
-| 45565 | Katz       | CSE        |  75000 |
-| 58583 | Califieri  | History    |  62000 |
-| 76543 | Singh      | Finance    |  80000 |
-| 76766 | Crick      | Biology    |  72000 |
-| 83821 | Brandi     | CSE        |  92000 |
-| 98345 | Kim        | Electrical |  80000 |
-+-------+------------+------------+--------+
-```sql
-CREATE TABLE instructors (
-    ID INT,
-    name VARCHAR(255),
-    dept_name VARCHAR(255),
-    salary INT
-);
-INSERT INTO instructors (ID, name, dept_name, salary)
-VALUES
-    (10101, 'Srinivasan', 'CSE', 65000),
-    (12121, 'Wu', 'Finance', 90000),
-    (15151, 'Mozart', 'Music', 40000),
-    (22222, 'Einstein', 'Physics', 95000),
-    (32343, 'El Said', 'History', 60000),
-    (33456, 'Gold', 'Physics', 87000),
-    (45565, 'Katz', 'CSE', 75000),
-    (58583, 'Califieri', 'History', 62000),
-    (76543, 'Singh', 'Finance', 80000),
-    (76766, 'Crick', 'Biology', 72000),
-    (83821, 'Brandi', 'CSE', 92000),
-    (98345, 'Kim', 'Electrical', 80000);
-```
-select * from section;
-+-----------+--------+----------+------+----------+-------------+--------------+
-| course_id | sec_id | semester | year | building | room_number | time_slot_id |
-+-----------+--------+----------+------+----------+-------------+--------------+
-| BIO-101   | 1      | Summer   | 2009 | Painter  | 514         | B            |
-| BIO-301   | 1      | Summer   | 2010 | Painter  | 514         | A            |
-| CS-101    | 1      | Fall     | 2009 | Packard  | 101         | H            |
-| CS-101    | 1      | Spring   | 2010 | Packard  | 101         | F            |
-| CS-190    | 1      | Spring   | 2009 | Taylor   | 3128        | E            |
-| CS-190    | 2      | Spring   | 2009 | Taylor   | 3128        | A            |
-| CS-315    | 1      | Spring   | 2010 | Watson   | 120         | D            |
-| CS-319    | 1      | Spring   | 2010 | Watson   | 100         | B            |
-| CS-319    | 2      | Spring   | 2010 | Taylor   | 3128        | C            |
-| CS-347    | 1      | Fall     | 2009 | Taylor   | 3128        | A            |
-| EE-181    | 1      | Spring   | 2009 | Taylor   | 3128        | C            |
-| FIN-201   | 1      | Spring   | 2010 | Packard  | 101         | B            |
-| HIS-351   | 1      | Spring   | 2010 | Painter  | 514         | C            |
-| MU-199    | 1      | Spring   | 2010 | Packard  | 101         | D            |
-| PHY-101   | 1      | Fall     | 2009 | Watson   | 100         | A            |
-+-----------+--------+----------+------+----------+-------------+--------------+
-```sql
-CREATE TABLE section (
-    course_id VARCHAR(10),
-    sec_id INT,
-    semester VARCHAR(255),
-    year INT,
-    building VARCHAR(255),
-    room_number VARCHAR(10),
-    time_slot_id VARCHAR(5)
-);
-INSERT INTO section (course_id, sec_id, semester, year, building, room_number, time_slot_id)
-VALUES
-    ('BIO-101', 1, 'Summer', 2009, 'Painter', '514', 'B'),
-    ('BIO-301', 1, 'Summer', 2010, 'Painter', '514', 'A'),
-    ('CS-101', 1, 'Fall', 2009, 'Packard', '101', 'H'),
-    ('CS-101', 1, 'Spring', 2010, 'Packard', '101', 'F'),
-    ('CS-190', 1, 'Spring', 2009, 'Taylor', '3128', 'E'),
-    ('CS-190', 2, 'Spring', 2009, 'Taylor', '3128', 'A'),
-    ('CS-315', 1, 'Spring', 2010, 'Watson', '120', 'D'),
-    ('CS-319', 1, 'Spring', 2010, 'Watson', '100', 'B'),
-    ('CS-319', 2, 'Spring', 2010, 'Taylor', '3128', 'C'),
-    ('CS-347', 1, 'Fall', 2009, 'Taylor', '3128', 'A'),
-    ('EE-181', 1, 'Spring', 2009, 'Taylor', '3128', 'C'),
-    ('FIN-201', 1, 'Spring', 2010, 'Packard', '101', 'B'),
-    ('HIS-351', 1, 'Spring', 2010, 'Painter', '514', 'C'),
-    ('MU-199', 1, 'Spring', 2010, 'Packard', '101', 'D'),
-    ('PHY-101', 1, 'Fall', 2009, 'Watson', '100', 'A');
-```
-select * from table1;
-+----+------+
-| ID | Name |
-+----+------+
-| a  | abc  |
-| b  | xyz  |
-| c  | def  |
-| e  | ghi  |
-+----+------+
-```sql
-CREATE TABLE table1 (
-    ID CHAR(1),
-    Name VARCHAR(255)
-);
-INSERT INTO table1 (ID, Name)
-VALUES
-    ('a', 'abc'),
-    ('b', 'xyz'),
-    ('c', 'def'),
-    ('e', 'ghi');
-```
+   Example:
+   ```sql
+   age INT; -- This can store whole numbers like 1, 100, -42, etc.
+   ```
 
-select * from table2;
-+----+-----------+
-| ID | Course_Id |
-+----+-----------+
-| a  | c1        |
-| b  | c2        |
-| c  | c3        |
-+----+-----------+
-```sql
+2. **`NUMERIC` or `DECIMAL`**:
+   - These data types are used to store exact numeric values with a specified precision and scale.
+   - `NUMERIC` allows you to specify both the total number of digits (precision) and the number of decimal places (scale).
+   - They are suitable for situations where you need to maintain precision in numeric values.
+   - `NUMERIC` is a great choice for financial or scientific data where precision is essential.
 
-CREATE TABLE table2 (
-    ID CHAR(1),
-    Course_Id CHAR(2)
-);
-INSERT INTO table2 (ID, Course_Id)
-VALUES
-    ('a', 'c1'),
-    ('b', 'c2'),
-    ('c', 'c3');
-```
+   Example:
+   ```sql
+   price NUMERIC(10, 2); -- This can store numbers like 12345.67 with a precision of 10 and 2 decimal places.
+   ```
 
-select * from teaches;
-+-------+-----------+--------+----------+------+
-| ID    | course_Id | Sec_Id | semester | year |
-+-------+-----------+--------+----------+------+
-| 10101 | CS-101    |      1 | Fall     | 2009 |
-| 10101 | CS-315    |      1 | Spring   | 2010 |
-| 10101 | CS-347    |      1 | Fall     | 2009 |
-| 12121 | FIN-201   |      1 | Spring   | 2010 |
-| 15151 | MU-199    |      1 | Spring   | 2010 |
-| 22222 | PHY-101   |      1 | Fall     | 2009 |
-| 32343 | HIS-351   |      1 | Spring   | 2010 |
-| 45565 | CS-101    |      1 | Spring   | 2010 |
-| 45565 | CS-319    |      1 | Spring   | 2010 |
-| 76766 | BIO-101   |      1 | Summer   | 2009 |
-| 76766 | BIO-301   |      1 | Summer   | 2010 |
-| 83821 | CS-190    |      1 | Spring   | 2009 |
-| 83821 | CS-190    |      2 | Spring   | 2009 |
-| 83821 | CS-319    |      2 | Spring   | 2010 |
-| 98345 | EE-181    |      1 | Spring   | 2009 |
-+-------+-----------+--------+----------+------+
-
-```sql
-
-CREATE TABLE teaches (
-    ID INT,
-    course_Id VARCHAR(10),
-    Sec_Id INT,
-    semester VARCHAR(255),
-    year INT
-);
-
-INSERT INTO teaches (ID, course_Id, Sec_Id, semester, year)
-VALUES
-    (10101, 'CS-101', 1, 'Fall', 2009),
-    (10101, 'CS-315', 1, 'Spring', 2010),
-    (10101, 'CS-347', 1, 'Fall', 2009),
-    (12121, 'FIN-201', 1, 'Spring', 2010),
-    (15151, 'MU-199', 1, 'Spring', 2010),
-    (22222, 'PHY-101', 1, 'Fall', 2009),
-    (32343, 'HIS-351', 1, 'Spring', 2010),
-    (45565, 'CS-101', 1, 'Spring', 2010),
-    (45565, 'CS-319', 1, 'Spring', 2010),
-    (76766, 'BIO-101', 1, 'Summer', 2009),
-    (76766, 'BIO-301', 1, 'Summer', 2010),
-    (83821, 'CS-190', 1, 'Spring', 2009),
-    (83821, 'CS-190', 2, 'Spring', 2009),
-    (83821, 'CS-319', 2, 'Spring', 2010),
-    (98345, 'EE-181', 1, 'Spring', 2009);
-```
-
----------------------------------
-
-show tables;
-+-------------------------+
-| Tables_in_19cse202_lab4 |
-+-------------------------+
-| aaa                     |
-| bbb                     |
-+-------------------------+
-
-select * from aaa;
-+-----+
-| AAA |
-+-----+
-| A   |
-| B   |
-| C   |
-| D   |
-| E   |
-| E   |
-+-----+
-
-```sql
-CREATE TABLE aaa (
-    AAA CHAR(1)
-);
-INSERT INTO aaa (AAA)
-VALUES
-    ('A'),
-    ('B'),
-    ('C'),
-    ('D'),
-    ('E'),
-    ('E');
-
-```
-
-select * from bbb;
-+-----+
-| BBB |
-+-----+
-| A   |
-| B   |
-| F   |
-| A   |
-+-----+
-
-```sql
-CREATE TABLE bbb (
-    BBB CHAR(1)
-);
-
-INSERT INTO bbb (BBB)
-VALUES
-    ('A'),
-    ('B'),
-    ('F'),
-    ('A');
-```
-
---------------------------
-
---------------------------
-
+In summary, `INT` or `INTEGER` is used for whole numbers, while `NUMERIC` (or `DECIMAL`) is used for exact numeric values with a specified precision and scale. The choice between them depends on the nature of your data and the level of precision required.

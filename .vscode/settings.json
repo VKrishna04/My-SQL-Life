@@ -18,8 +18,12 @@
     "Ravi",
     "Rukmini",
     "Saitwal",
+    "SMALLINT",
     "Sreedhar",
+    "TINYINT",
     "Vandana",
+    "VARBINARY",
+    "VARBIT",
     "varchar",
     "VARCHAR"
   ]
